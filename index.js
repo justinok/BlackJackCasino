@@ -6,6 +6,7 @@ const cards =["A","2","3","4","5","6","7","8","9","10","K","Q","J"];
 let selectedCards=[]; //First and second card -randomly. And then add with a draw function
 let sum =0;
 let answer ="";
+let prizes =0;
 
 //To get inputs
 const readline = require('readline').createInterface({
@@ -43,39 +44,13 @@ function playingGame(){
         drawCard();
     }else if(sum===21){
         console.log("Blackjack!");
-    }else{
-        console.log("Sorry, you lose.")
     }
-}
-
-function bucleOfGaming(){
-
-    startGame();
-    playingGame();
-    if(sum<21){
+    if (sum>21){
+        console.log("perdedor!");
 
     }
 }
-function catchInput(){
-    var prompt = require('prompt-sync')();
-//
-// get input from the user.
-//
-    var n = prompt('You got a A card. Do you want it to be 11 or 1? (11/1): ');
-    switch(n){
-        case "11":
-            console.log("11 was aded to your accumulated");
-            sum+=11;
-            break;
-        case "1":
-            console.log("1 was aded to your accumulated");
-            sum+=1;
-            break;
-        default:
-            console.log("Invalid input. ");
-            break;
-    }
-}
+
 
 function drawCard(){
 
@@ -90,12 +65,29 @@ function drawCard(){
                 anotherCard();
                 break;
             case "N":
-                console.log("Ok, game finished.");
+
+                let pc = getRndInteger(16,21);
+                if (pc>sum) {
+                    prizes-=1000;
+                    console.log("Sorry you lose, your accumulated is " + sum +
+                    " and the PC accumulated is " + pc + " that is more closer" +
+                        "to 21, you lose $1000 " );
+                    anotherRound();
+                }
+                if (pc<sum) {
+                    prizes+=1000;
+                    console.log("You win!!!! with " + sum +
+                        "vs PC accumulated that is " + pc + "you win $1000 " );
+                    anotherRound();
+                }
                 break;
             default:
                 console.log("Invalid input. ");
                 break;
         }
+}
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
 }
 
 function  anotherCard(){
@@ -160,9 +152,95 @@ function sumEachCard(elem){
 }
 
 
+function gameBucle(){
+    let selectedCards=[];
+    let sum =0;
+    let answer ="";
+    let prizes =0;
+    startGame();
+    while (sum<21){
+        drawCard();
+    }
+    if (sum === 21) {
+        console.log("black jackk")
+        prizes+=1000;
+        anotherRound();
+    }
+    if (sum > 21) {
+        console.log("perdedor")
+        prizes-=1000;
+        anotherRound();
+    }
+}
+
+function anotherRound(){
+    var prompt = require('prompt-sync')();
+//
+// get input from the user.
+//
+    var n = prompt('Another round? Could be an extra' +
+        ' $1000 on your pocket (Y/N): ');
+
+    switch(n){
+        case "Y":
+
+            gameBucle();
+            break;
+        case "N":
+            console.log("Ok, the accumulated for your prizes is a total" +
+                "of $" + prizes);
 
 
-console.log("Blackjack");
-console.log("Feeling with luck? - Give it a try~~");
-startGame();
-playingGame();
+            break;
+        default:
+            console.log("Invalid input. ");
+            break;
+    }
+}
+
+/**
+ * Funcion que pregunta al usuario si esta listo para iniciar
+ * Y- redirige a gameBucle para entrar al juego
+ * N- Regaña al usuario por hacerle perder el tiempo a la maquina
+ */
+function areYouReady(){
+    var prompt = require('prompt-sync')();
+//
+// get input from the user.
+//
+    var n = prompt('Are you ready to start with your first game (Y/N): ');
+
+    switch(n){
+        case "Y":
+            console.log("================================================" +
+                "===============");
+            console.log("Let's go!");
+            console.log("================================================" +
+                "===============");
+            gameBucle();
+            break;
+        case "N":
+            console.log("Come back when you have the courage to change your " +
+                "life");
+
+            break;
+        default:
+            console.log("Invalid input. ");
+            break;
+    }
+}
+
+
+/**
+ * Comienzo del Juego, saludo e instrucciones seguido del metodo areyouready
+ * para preguntarle al usuario si desea comenzar
+ */
+console.log("===============================================================");
+console.log("Welcome to Black Jack!!");
+console.log("You are going to compete vs the pc, if you win the round you " +
+    " will recive $1000, if you lose the round you gonna lose $1000.");
+console.log("---------------------------------------------------------------");
+areYouReady();
+
+
+
