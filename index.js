@@ -40,23 +40,54 @@ function startGame(){
 
 function playingGame(){
     if(sum<21){
-        console.log("Do you want to draw a card? (Y/N)"); //Input
+        drawCard();
     }else if(sum===21){
         console.log("Blackjack!");
     }else{
         console.log("Sorry, you lose.")
     }
+}
 
+function bucleOfGaming(){
 
+    startGame();
+    playingGame();
+    if(sum<21){
+
+    }
+}
+function catchInput(){
+    var prompt = require('prompt-sync')();
+//
+// get input from the user.
+//
+    var n = prompt('You got a A card. Do you want it to be 11 or 1? (11/1): ');
+    switch(n){
+        case "11":
+            console.log("11 was aded to your accumulated");
+            sum+=11;
+            break;
+        case "1":
+            console.log("1 was aded to your accumulated");
+            sum+=1;
+            break;
+        default:
+            console.log("Invalid input. ");
+            break;
+    }
 }
 
 function drawCard(){
-    readline.question("Do you want to draw a card? (Y/N): ", function(answerIn){
-        answer = answerIn;
+
+        var prompt = require('prompt-sync')();
+//
+// get input from the user.
+//
+        var answer = prompt('Do you want to draw a card? (Y/N): ');
 
         switch(answer){
             case "Y":
-                console.log("Draw the card...");
+                anotherCard();
                 break;
             case "N":
                 console.log("Ok, game finished.");
@@ -65,15 +96,27 @@ function drawCard(){
                 console.log("Invalid input. ");
                 break;
         }
+}
 
-    });
+function  anotherCard(){
+    const i_newCard=Math.floor(Math.random() * cards.length);
+
+    const newCard=cards[i_newCard];
+
+    selectedCards.push(newCard);
+    sumEachCard(newCard);
+    console.log("Your cards are: "+selectedCards);
+    console.log("The new accumulated is: "+ sum);
 }
 
 function aCardSelection(){
-    readline.question("You got a A card. Do you want it to be 11 or 1? (11/1): ", function(answerA){
-        answer = answerA;
+    var prompt = require('prompt-sync')();
+//
+// get input from the user.
+//
+    var n = prompt('You got a A card. Do you want it to be 11 or 1? (11/1): ');
 
-        switch(answer){
+        switch(n){
             case "11":
                 console.log("11 was aded to your accumulated");
                 sum+=11;
@@ -87,7 +130,7 @@ function aCardSelection(){
                 break;
         }
 
-    });
+
 }
 
 function sumCards(selectedCards){
@@ -118,6 +161,8 @@ function sumEachCard(elem){
 
 
 
+
 console.log("Blackjack");
 console.log("Feeling with luck? - Give it a try~~");
 startGame();
+playingGame();

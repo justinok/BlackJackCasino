@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/justinok/BlackJackCasino/issues"
   },
-  "homepage": "https://github.com/justinok/BlackJackCasino#readme"
+  "homepage": "https://github.com/justinok/BlackJackCasino#readme",
+  "dependencies": {
+    "prompt-sync": "^4.2.0",
+    "prompt-sync-history": "^1.0.1"
+  }
 }
