@@ -1,6 +1,6 @@
 let player = {
     name: "Justin",
-    Accumulated: 0
+    Accumulated: 250
 }
 
 let cards = []
@@ -8,6 +8,7 @@ const SUITS = ["♠", "♣", "♥", "♦"]
 let sum = 0
 let hasBlackJack = false
 let isAlive = false
+let isInGame = false
 let message = ""
 let messageEl = document.getElementById("message-el")
 let sumEl = document.getElementById("sum-el")
@@ -28,16 +29,21 @@ function getRandomCard() {
 }
 
 function startGame() {
-    isAlive = true
-    let firstCard = getRandomCard()
-    let secondCard = getRandomCard()
-    cards = [firstCard, secondCard]
-    sum = firstCard + secondCard
-    renderGame()
+
+    if ( isInGame == false) {
+        player.Accumulated -= 250
+        isAlive = true
+        let firstCard = 10 //getRandomCard()
+        let secondCard = 11 //getRandomCard()
+        cards = [firstCard, secondCard]
+        sum = firstCard + secondCard
+        isInGame = true
+        renderGame()
+    }
 }
 
 function renderGame() {
-    let randomType = Math.floor( Math.random()*3 ) + 1
+
     cardsEl.textContent = "Cards: "
     for (let i = 0; i < cards.length; i++) {
         cardsEl.textContent += cards[i] + SUITS[i]+ " "
@@ -66,4 +72,10 @@ function newCard() {
         cards.push(card)
         renderGame()
     }
+}
+
+function newRound() {
+    isInGame = false
+    startGame()
+
 }
